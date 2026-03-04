@@ -42,7 +42,7 @@ export default function PostCard({ post, onLike, onDelete }) {
   };
 
   return (
-    <article className="rounded-2xl p-5 border transition-all duration-200 group"
+    <article className="rounded-2xl border overflow-hidden transition-all duration-200 group"
       style={{
         background: '#1a1a24',
         borderColor: '#2e2e3e',
@@ -50,7 +50,10 @@ export default function PostCard({ post, onLike, onDelete }) {
       onMouseEnter={e => e.currentTarget.style.borderColor = '#3e3e54'}
       onMouseLeave={e => e.currentTarget.style.borderColor = '#2e2e3e'}>
 
-      <div className="flex gap-3">
+      {/* Mood accent bar */}
+      <div className="h-0.5 w-full" style={{ background: `linear-gradient(90deg, ${mood.color}60, transparent)` }} />
+
+      <div className="p-5 flex gap-3">
         {/* Avatar */}
         <img src={post.avatar} alt={post.username}
           className="w-10 h-10 rounded-full flex-shrink-0 ring-2"

@@ -75,6 +75,13 @@ export default function HomePage() {
             ))}
           </div>
         )}
+
+        {/* Footer */}
+        <footer className="mt-12 pb-8 text-center">
+          <p className="text-xs" style={{ color: '#444458' }}>
+            ✦ DoneList — celebrate every day's work
+          </p>
+        </footer>
       </main>
     </div>
   );
