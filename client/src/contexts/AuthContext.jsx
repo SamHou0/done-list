@@ -14,7 +14,14 @@ export function AuthProvider({ children }) {
     return data.user;
   }, []);
 
-  const register = useCallback(async (username, email, password) => {
+  // Used by admin to create a new user account
+  const createUser = useCallback(async (username, email, password) => {
+    const { data } = await api.post('/auth/register', { username, email, password });
+    return data.user;
+  }, []);
+
+  // First-time setup: registers the very first (admin) account
+  const setupAdmin = useCallback(async (username, email, password) => {
     const { data } = await api.post('/auth/register', { username, email, password });
     localStorage.setItem('token', data.token);
     localStorage.setItem('user', JSON.stringify(data.user));
@@ -29,7 +36,7 @@ export function AuthProvider({ children }) {
   }, []);
 
   return (
-    <AuthCtx.Provider value={{ user, login, register, logout }}>
+    <AuthCtx.Provider value={{ user, login, createUser, setupAdmin, logout }}>
       {children}
     </AuthCtx.Provider>
   );

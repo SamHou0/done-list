@@ -23,6 +23,7 @@ function initDB() {
       email     TEXT UNIQUE NOT NULL,
       password  TEXT NOT NULL,
       avatar    TEXT,
+      is_admin  INTEGER NOT NULL DEFAULT 0,
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP
     );
 
@@ -42,6 +43,13 @@ function initDB() {
   `);
 
   console.log('Database initialized');
+
+  // Migrate: add is_admin if missing (for existing databases)
+  const cols = db.prepare("PRAGMA table_info(users)").all().map(c => c.name);
+  if (!cols.includes('is_admin')) {
+    db.exec('ALTER TABLE users ADD COLUMN is_admin INTEGER NOT NULL DEFAULT 0');
+    console.log('Migration: added is_admin column');
+  }
 }
 
 module.exports = { getDB, initDB };
