@@ -6,6 +6,7 @@ require('dotenv').config();
 const { initDB } = require('./db');
 const authRoutes = require('./routes/auth');
 const postRoutes = require('./routes/posts');
+const adminRoutes = require('./routes/admin');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -18,6 +19,7 @@ initDB();
 
 app.use('/api/auth', authRoutes);
 app.use('/api/posts', postRoutes);
+app.use('/api/admin', adminRoutes);
 app.get('/api/health', (_req, res) => res.json({ ok: true }));
 
 // Serve built frontend in production

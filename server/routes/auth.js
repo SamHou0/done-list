@@ -107,4 +107,24 @@ router.patch('/avatar', auth, (req, res) => {
   res.json({ avatar: avatar_url.trim() });
 });
 
+// PATCH /api/auth/password - change own password (requires current password)
+router.patch('/password', auth, async (req, res) => {
+  const { current_password, new_password } = req.body;
+  if (!current_password || !new_password) {
+    return res.status(400).json({ error: 'current_password and new_password are required' });
+  }
+  if (new_password.length < 6) {
+    return res.status(400).json({ error: 'New password must be at least 6 characters' });
+  }
+
+  const db = getDB();
+  const user = db.prepare('SELECT * FROM users WHERE id = ?').get(req.user.id);
+  const valid = await bcrypt.compare(current_password, user.password);
+  if (!valid) return res.status(401).json({ error: 'Current password is incorrect' });
+
+  const hashed = await bcrypt.hash(new_password, 10);
+  db.prepare('UPDATE users SET password = ? WHERE id = ?').run(hashed, req.user.id);
+  res.json({ ok: true });
+});
+
 module.exports = router;
