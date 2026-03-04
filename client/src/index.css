@@ -1,0 +1,20 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --bg: #0f0f13;
+    --surface: #1a1a24;
+    --surface2: #22222e;
+    --border: #2e2e3e;
+    --accent: #7c6af7;
+    --accent2: #a78bfa;
+    --text: #e8e8f0;
+    --text-muted: #8888a8;
+  }
+  body {
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+}
