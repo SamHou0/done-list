@@ -29,6 +29,15 @@ export function AuthProvider({ children }) {
     return data.user;
   }, []);
 
+  // Update avatar URL for the current user
+  const updateAvatar = useCallback(async (avatarUrl) => {
+    const { data } = await api.patch('/auth/avatar', { avatar_url: avatarUrl });
+    const updated = { ...JSON.parse(localStorage.getItem('user')), avatar: data.avatar };
+    localStorage.setItem('user', JSON.stringify(updated));
+    setUser(updated);
+    return updated;
+  }, []);
+
   const logout = useCallback(() => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
@@ -36,7 +45,7 @@ export function AuthProvider({ children }) {
   }, []);
 
   return (
-    <AuthCtx.Provider value={{ user, login, createUser, setupAdmin, logout }}>
+    <AuthCtx.Provider value={{ user, login, createUser, setupAdmin, updateAvatar, logout }}>
       {children}
     </AuthCtx.Provider>
   );

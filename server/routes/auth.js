@@ -91,4 +91,20 @@ router.get('/status', (_req, res) => {
   res.json({ initialized: hasUsers });
 });
 
+// PATCH /api/auth/avatar - update the current user's avatar URL
+router.patch('/avatar', auth, (req, res) => {
+  const { avatar_url } = req.body;
+  if (!avatar_url || typeof avatar_url !== 'string') {
+    return res.status(400).json({ error: 'avatar_url is required' });
+  }
+  // Basic URL validation
+  try { new URL(avatar_url); } catch {
+    return res.status(400).json({ error: 'avatar_url must be a valid URL' });
+  }
+
+  const db = getDB();
+  db.prepare('UPDATE users SET avatar = ? WHERE id = ?').run(avatar_url.trim(), req.user.id);
+  res.json({ avatar: avatar_url.trim() });
+});
+
 module.exports = router;
