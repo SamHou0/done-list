@@ -1,0 +1,11 @@
+**/node_modules
+**/.git
+**/dist
+**/*.db
+**/*.db-journal
+**/*.db-shm
+**/*.db-wal
+.env
+.DS_Store
+README.md
+docker-compose.yml

@@ -21,7 +21,7 @@ app.use('/api/posts', postRoutes);
 app.get('/api/health', (_req, res) => res.json({ ok: true }));
 
 // Serve built frontend in production
-const clientDist = path.join(__dirname, '../client/dist');
+const clientDist = process.env.STATIC_PATH || path.join(__dirname, '../client/dist');
 app.use(express.static(clientDist));
 app.get('/{*path}', (_req, res) => {
   res.sendFile(path.join(clientDist, 'index.html'));
